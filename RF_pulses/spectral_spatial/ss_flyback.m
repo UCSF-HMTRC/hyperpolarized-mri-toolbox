@@ -142,6 +142,8 @@ function [rf,g] = ss_flyback(ang, z_thk, z_tb, z_d, f, a, d, fs, ptype, z_ftype,
 		% the number of time samples of the gradient --- do this 
 		% partly before calling b2rf and partly afterwards
 		%
+        fprintf(1,'Note: Spectral Correction for SLR pulses only corrects base bandwidth (not aliased bands)\n');
+
 		Nper = length([gpos gneg]);
 		oversamp_slr = 16;
 		Ntotal  = Nper * (length(s_b));
@@ -339,9 +341,7 @@ function [rf,g] = ss_flyback(ang, z_thk, z_tb, z_d, f, a, d, fs, ptype, z_ftype,
 		if (dbg)
 		    fprintf(1,'No SLR.. spectral correction...\n');
 		end;
-%		s_rfm = ss_spect_correct(s_b, bsf, Nper, Noff, (f-f_off)/(fs/2), ...
-%					 ptype, 'Flyback', SS_SLR_FLAG, SS_SPECT_CORRECT_REGULARIZATION, dbg);
-		s_rfm = ss_spect_correct(s_b, bsf, Nper, Noff, f, ...
+		s_rfm = ss_spect_correct(s_b, bsf, Nper, Noff, (f-f_off)/(fs/2), ...
 					 ptype, 'Flyback', SS_SLR_FLAG, SS_SPECT_CORRECT_REGULARIZATION, dbg);
 	    else
 		s_rfm = ang * conj(s_b(:)) * ones(1,ng2); % Intentional conjugation
